@@ -4,7 +4,7 @@ import Button from '../UI/Button';
 import { Input } from '../UI/Input';
 
 interface AuthFormProps {
-  isLogin: boolean;
+  isLogin: boolean | undefined;
   credentialsInvalid: any;
   onSubmit: (data: any) => void;
 }
