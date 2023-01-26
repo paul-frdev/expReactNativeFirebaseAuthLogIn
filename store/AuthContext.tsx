@@ -1,6 +1,8 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { ILogIn } from '../types/auth';
 import { AppProviderProps } from '../types/expense';
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const defaultState = {
@@ -17,10 +19,12 @@ const AuthContextProvider = ({ children }: AppProviderProps) => {
 
   const authenticated = (token: string) => {
     setAuthToken(token);
+    AsyncStorage.setItem('token', token)
   };
 
   const logout = () => {
-    setAuthToken('')
+    setAuthToken('');
+    AsyncStorage.removeItem('token');
   };
 
 
@@ -30,7 +34,7 @@ const AuthContextProvider = ({ children }: AppProviderProps) => {
     authenticated,
     logout
   }
-  
+
   return (
     <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
   )
