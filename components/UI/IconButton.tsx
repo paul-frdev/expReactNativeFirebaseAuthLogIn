@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 
 interface IconButtonProps {
@@ -7,12 +7,15 @@ interface IconButtonProps {
   size?: number;
   color?: string;
   onPress?: () => void;
+  customStyles?: object;
 }
 
-const IconButton = ({ iconName, size = 24, color = "#fff", onPress }: IconButtonProps) => {
+const IconButton = ({ iconName, size = 24, color = "#fff", onPress, customStyles }: IconButtonProps) => {
+  console.log('press');
+  
   return (
     <Pressable style={({pressed}) => pressed && styles.pressed}>
-      <View style={styles.buttonContainer}>
+      <View style={[styles.buttonContainer, customStyles]}>
         <Ionicons 
         name={iconName}
         color={color} 
@@ -35,6 +38,5 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.75,
-
   }
 });

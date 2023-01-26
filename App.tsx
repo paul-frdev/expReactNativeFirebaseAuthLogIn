@@ -1,15 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import { AuthStackNavigation } from './navigators/AuthStackNavigation';
-import { NativeNavigation } from './navigators/NativeNavigation';
-import AppProvider from './store/AppContext';
+import {  Navigation } from './navigators/AuthStackNavigation';
+import AuthContextProvider from './store/AuthContext';
+
 
 export default function App() {
   return (
-    <>
-      <AppProvider>
-        <StatusBar style="light" />
-        <AuthStackNavigation />
-      </AppProvider>
-    </>
+    <AuthContextProvider>
+      <StatusBar style="light" />
+      <Navigation />
+    </AuthContextProvider>
   );
 }

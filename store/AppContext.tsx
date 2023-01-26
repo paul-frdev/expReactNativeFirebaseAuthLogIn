@@ -1,13 +1,10 @@
-import React, { createContext, Dispatch, ReactNode, useReducer } from "react";
-import { ExpenseType } from '../types/expense';
+import React, { createContext, Dispatch, useReducer } from "react";
+import { AppProviderProps, ExpenseType } from '../types/expense';
 import { ExpenseActions, expenseReducer } from './reducers';
 
-interface ExpenseProviderProps {
-  children: ReactNode;
-}
 
-export type InitialExpenseStateType = {
-  expenses: ExpenseType[];
+type InitialStateType = {
+  expenses?: ExpenseType[] | undefined;
 };
 
 const defaultState = {
@@ -15,18 +12,18 @@ const defaultState = {
 }
 
 export const AppContext = createContext<{
-  state: InitialExpenseStateType;
+  state: InitialStateType;
   dispatch: Dispatch<ExpenseActions>
 }>({
   state: defaultState,
   dispatch: () => null
 });
 
-const mainReducer = ({ expenses }: InitialExpenseStateType, actions: ExpenseActions) => ({
-  expenses: expenseReducer(expenses, actions)
+const mainReducer = ({ expenses }: InitialStateType, actions: ExpenseActions ) => ({
+  expenses: expenseReducer(expenses!, actions),
 });
 
-const AppProvider = ({ children }: ExpenseProviderProps) => {
+const AppProvider = ({ children }: AppProviderProps) => {
   const [state, dispatch] = useReducer(mainReducer, defaultState);
 
   return (

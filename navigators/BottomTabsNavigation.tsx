@@ -5,10 +5,14 @@ import RecentExpenses from '../screens/RecentExpenses';
 import { BottomStackParamList } from '../types/navigation';
 import { Ionicons } from "@expo/vector-icons";
 import IconButton from '../components/UI/IconButton';
+import { StyleSheet, View } from 'react-native';
+import { useContext } from 'react';
+import { AuthContext } from '../store/AuthContext';
 
 const BottomTabsStack = createBottomTabNavigator<BottomStackParamList>();
 
 const BottomTabsNavigation = () => {
+  const { logout } = useContext(AuthContext);
   return (
     <BottomTabsStack.Navigator screenOptions={({ navigation }) => ({
       headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
@@ -16,11 +20,21 @@ const BottomTabsNavigation = () => {
       tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
       tabBarActiveTintColor: GlobalStyles.colors.accent500,
       headerRight: ({ tintColor }) => (
-        <IconButton 
-        iconName="add" 
-        color={tintColor} 
-        onPress={() => navigation.navigate("ManageExpense")}
-        />
+        <View style={styles.containerHeaderRight}>
+          <IconButton
+            iconName="add"
+            size={28}
+            color={tintColor}
+            customStyles={styles.addButton}
+            onPress={() => navigation.navigate("ManageExpense")}
+          />
+          <IconButton
+            iconName="log-out"
+            size={32}
+            color={tintColor}
+            onPress={logout}
+          />
+        </View>
       )
     })}>
       <BottomTabsStack.Screen name="AllExpenses" component={AllExpenses} options={{
@@ -39,4 +53,14 @@ const BottomTabsNavigation = () => {
 
 export default BottomTabsNavigation;
 
+const styles = StyleSheet.create({
+  containerHeaderRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  addButton: {
+    marginRight: 1
+  },
+})
 

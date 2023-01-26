@@ -1,18 +1,7 @@
-import { ActionKind, ExpenseType } from "../types/expense";
-
-type ActionMap<M extends { [index: string]: any }> = {
-  [Key in keyof M]: M[Key] extends undefined
-    ? {
-        type: Key;
-      }
-    : {
-        type: Key;
-        payload: M[Key];
-      };
-};
+import { ActionKind, ActionMap, ExpenseType } from "../types/expense";
 
 export type InitialExpenseStateType = {
-  expenses: ExpenseType[];
+  expenses?: ExpenseType[];
 };
 
 type ExpensePayload = {
@@ -33,6 +22,7 @@ type ExpensePayload = {
     date: Date;
   };
   [ActionKind.SET]: {
+    [x: string]: any;
     expenses: ExpenseType[];
   };
 };
@@ -66,7 +56,6 @@ export const expenseReducer = (
       const updatableExpense = state[updatableExpenseIndex];
       const updatableItem = { ...updatableExpense, ...action.payload };
       const updatableExpenses = [...state];
-      console.log((updatableExpenses[updatableExpenseIndex] = updatableItem));
       updatableExpenses[updatableExpenseIndex] = updatableItem;
       return updatableExpenses;
     case ActionKind.SET:
@@ -76,3 +65,5 @@ export const expenseReducer = (
       return state;
   }
 };
+
+

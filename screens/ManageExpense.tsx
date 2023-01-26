@@ -33,7 +33,7 @@ const ManageExpense = ({ route, navigation }: RootStackParamListRoute) => {
     })
   }, [navigation, isEditing]);
 
-  const selectedExpense = state.expenses.find((expense) => expense.id === editedId)
+  const selectedExpense = state?.expenses?.find((expense) => expense.id === editedId)
 
   const deleteExpenseHandler = async () => {
 

@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { GlobalStyles } from '../../constants';
+import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
 import Button from '../UI/Button';
 import { Input } from '../UI/Input';
+import { Ionicons } from "@expo/vector-icons";
 
 interface AuthFormProps {
   isLogin: boolean | undefined;
@@ -14,6 +17,9 @@ export const AuthForm = ({ isLogin, credentialsInvalid, onSubmit }: AuthFormProp
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
+
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
 
   const {
     email: emailIsInvalid,
@@ -57,7 +63,7 @@ export const AuthForm = ({ isLogin, credentialsInvalid, onSubmit }: AuthFormProp
           textInfoConfig={{
             KeyboardType: 'email-address',
             onChangeText: updateInputValueHandler.bind(this, 'email'),
-            value: enteredEmail,
+            value: enteredEmail.toLowerCase(),
           }}
         />
         {!isLogin && (
@@ -66,17 +72,19 @@ export const AuthForm = ({ isLogin, credentialsInvalid, onSubmit }: AuthFormProp
             inValid={emailsDontMatch}
             textInfoConfig={{
               onChangeText: updateInputValueHandler.bind(this, 'confirmEmail'),
-              value: enteredConfirmEmail,
-              KeyboardType: "email-address"
+              value: enteredConfirmEmail.toLowerCase(),
+              KeyboardType: "email-address",
             }}
           />
         )}
         <Input
           label="Password"
           inValid={passwordIsInvalid}
+          secureTextEntry={passwordVisibility}
+          onPressIcon={handlePasswordVisibility}
+          iconName={rightIcon as keyof typeof Ionicons.glyphMap}
           textInfoConfig={{
             onChangeText: updateInputValueHandler.bind(this, 'password'),
-            secure: true,
             value: enteredPassword
           }}
         />
@@ -84,12 +92,14 @@ export const AuthForm = ({ isLogin, credentialsInvalid, onSubmit }: AuthFormProp
           <Input
             label="Confirm Password"
             inValid={passwordsDontMatch}
+            secureTextEntry={passwordVisibility}
+            onPressIcon={handlePasswordVisibility}
+            iconName={rightIcon as keyof typeof Ionicons.glyphMap}
             textInfoConfig={{
               onChangeText: updateInputValueHandler.bind(
                 this,
                 'confirmPassword'
               ),
-              secure: true,
               value: enteredConfirmPassword
             }}
           />
@@ -108,5 +118,7 @@ const styles = StyleSheet.create({
   buttons: {
     marginTop: 12,
   },
-  form: {}
+  form: {
+    backgroundColor: GlobalStyles.colors.gray500
+  }
 });
